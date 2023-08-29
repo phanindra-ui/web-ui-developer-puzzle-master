@@ -6,6 +6,7 @@ import * as fromBooks from './+state/books.reducer';
 import { BooksEffects } from './+state/books.effects';
 import * as fromReadingList from './+state/reading-list.reducer';
 import { ReadingListEffects } from './+state/reading-list.effects';
+import { SnackbarComponent } from './snackbar/snackbar.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { ReadingListEffects } from './+state/reading-list.effects';
       fromReadingList.reducer
     ),
     EffectsModule.forFeature([BooksEffects, ReadingListEffects])
-  ]
+  ],
+  declarations: [SnackbarComponent]  
 })
 export class BooksDataAccessModule {}
