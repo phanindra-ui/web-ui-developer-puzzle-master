@@ -1,4 +1,4 @@
-<form [formGroup]="searchForm">
+<form [formGroup]="searchForm" (submit)="searchBooks()">
   <mat-form-field floatLabel="never">
     <input
       autoFocus
@@ -7,6 +7,9 @@
       placeholder="Search for books to add to your reading list"
       formControlName="term"
     />
+    <button mat-icon-button matSuffix>
+      <mat-icon>search</mat-icon>
+    </button>
   </mat-form-field>
 </form>
 
@@ -29,7 +32,6 @@
           <p [innerHTML]="b.description"></p>
           <div>
             <button
-              [attr.aria-label]="'Add ' + b.title + ' to reading list'"
               mat-flat-button
               color="primary"
               (click)="addBookToReadingList(b)"
@@ -46,7 +48,7 @@
 <ng-template #empty>
   <div class="empty">
     <p>
-      Try searching for a topic, for example "<a (click)="searchExample()" aria-label="search-example" 
+      Try searching for a topic, for example "<a (click)="searchExample()"
         >JavaScript</a
       >".
     </p>
