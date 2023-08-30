@@ -3,13 +3,33 @@
     <div>
       <img class="reading-list-item--cover" [src]="b.coverUrl" />
     </div>
-    <div class="reading-list-item--details">
+    <div class="reading-list-item--details" [class.finished-reading]="b.finished">
       <strong class="reading-list-item--details--title">{{ b.title }}</strong>
       <div class="reading-list-item--details--author">
         {{ b.authors.join(',') }}
       </div>
     </div>
-    <div>
+    <div class="reading-list-item--button-container">
+      <button
+        mat-icon-button
+        color="primary"
+        [attr.aria-label]="'Not finished ' + b.title + ' from reading list'"
+        (click)="finishReading(b)"
+        *ngIf="!b.finished"
+        title="Finished Reading?"
+      >
+        <mat-icon>done</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        class="finished"
+        [attr.aria-label]="'Finished ' + b.title + ' from reading list'"
+        *ngIf="b.finished"
+        title="Read"
+      >
+        <mat-icon>check_circle</mat-icon>
+      </button>
+
       <button
         mat-icon-button
         color="warn"
