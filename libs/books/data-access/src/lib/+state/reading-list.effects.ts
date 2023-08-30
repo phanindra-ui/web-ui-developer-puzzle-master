@@ -5,25 +5,10 @@ import { of } from 'rxjs';
 import { catchError, concatMap, exhaustMap, map } from 'rxjs/operators';
 import { ReadingListItem } from '@tmo/shared/models';
 import * as ReadingListActions from './reading-list.actions';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../snackbar/snackbar.component';
-
-enum Action {
-  ADD = "ADD",
-  REMOVE = "REMOVE"
-}
-
 
 @Injectable()
 export class ReadingListEffects implements OnInitEffects {
   
-  config: MatSnackBarConfig = {
-    panelClass: 'snack',
-    duration: 10000,
-    horizontalPosition: 'right',
-    verticalPosition: 'bottom'
-  };
-
   loadReadingList$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ReadingListActions.init),
@@ -46,10 +31,6 @@ export class ReadingListEffects implements OnInitEffects {
       concatMap(({ book }) =>
         this.http.post('/api/reading-list', book).pipe(
           map(() => {
-            this._snackBar.openFromComponent(SnackbarComponent, {
-              data: {message: 'Book added successfully!', action: Action.REMOVE, item: book},
-              ...this.config
-            });
             return ReadingListActions.confirmedAddToReadingList({ book })
           }),
           catchError(() =>
@@ -66,10 +47,6 @@ export class ReadingListEffects implements OnInitEffects {
       concatMap(({ item }) =>
         this.http.delete(`/api/reading-list/${item.bookId}`).pipe(
           map(() => {
-            this._snackBar.openFromComponent(SnackbarComponent, {
-              data: {message: 'Book removed successfully!', action: Action.ADD, item: item},
-              ...this.config
-            });
             return ReadingListActions.confirmedRemoveFromReadingList({ item })
           }
           ),
@@ -85,5 +62,5 @@ export class ReadingListEffects implements OnInitEffects {
     return ReadingListActions.init();
   }
 
-  constructor(private actions$: Actions, private http: HttpClient, private _snackBar: MatSnackBar) { }
+  constructor(private actions$: Actions, private http: HttpClient) { }
 }

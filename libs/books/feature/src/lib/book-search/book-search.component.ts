@@ -3,12 +3,21 @@ import { Store } from '@ngrx/store';
 import {
   addToReadingList,
   clearSearch,
+  confirmedAddToReadingList,
   getAllBooks,
   ReadingListBook,
   searchBooks
 } from '@tmo/books/data-access';
 import { FormBuilder } from '@angular/forms';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { SnackbarComponent } from '../../../../feature/src/lib/snackbar/snackbar.component';
+
 import { Book } from '@tmo/shared/models';
+import { take } from 'rxjs/operators';
+enum Action {
+  ADD = "ADD",
+  REMOVE = "REMOVE"
+}
 
 @Component({
   selector: 'tmo-book-search',
@@ -17,6 +26,13 @@ import { Book } from '@tmo/shared/models';
 })
 export class BookSearchComponent implements OnInit {
   books: ReadingListBook[];
+  
+  config: MatSnackBarConfig = {
+    panelClass: 'snack',
+    duration: 2000,
+    horizontalPosition: 'right',
+    verticalPosition: 'bottom'
+  };
 
   searchForm = this.fb.group({
     term: ''
@@ -24,7 +40,8 @@ export class BookSearchComponent implements OnInit {
 
   constructor(
     private readonly store: Store,
-    private readonly fb: FormBuilder
+    private readonly fb: FormBuilder, 
+    private _snackBar: MatSnackBar
   ) {}
 
   get searchTerm(): string {
@@ -45,6 +62,13 @@ export class BookSearchComponent implements OnInit {
 
   addBookToReadingList(book: Book) {
     this.store.dispatch(addToReadingList({ book }));
+    
+    this.store.select(confirmedAddToReadingList).pipe(take(1)).subscribe(books => {
+      books && this._snackBar.openFromComponent(SnackbarComponent, {
+        data: {message: 'Book added successfully!', action: Action.REMOVE, item: book},
+        ...this.config
+      });
+    });
   }
 
   searchExample() {
@@ -55,6 +79,7 @@ export class BookSearchComponent implements OnInit {
   searchBooks() {
     if (this.searchForm.value.term) {
       this.store.dispatch(searchBooks({ term: this.searchTerm }));
+      
     } else {
       this.store.dispatch(clearSearch());
     }

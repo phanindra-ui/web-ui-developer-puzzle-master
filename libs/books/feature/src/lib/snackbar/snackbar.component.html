@@ -1,0 +1,6 @@
+<span class="container" *ngIf="data.message">
+    <span class="message">
+        {{data.message}}
+    </span>
+    <span class="action" (click)="undoAction(data.action)">Undo</span>
+</span>

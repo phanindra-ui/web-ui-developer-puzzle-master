@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
-import { addToReadingList, removeFromReadingList } from '../+state/reading-list.actions';
+import { addToReadingList, removeFromReadingList } from '../../../../data-access/src/lib/+state/reading-list.actions';
 import { Book, ReadingListItem } from '@tmo/shared/models';
 
 enum Action {
@@ -16,6 +16,7 @@ enum Action {
     styleUrls: ['./snackbar.component.scss']
 })
 export class SnackbarComponent {
+    
     constructor(
         public snackBarRef: MatSnackBarRef<SnackbarComponent>,
         @Inject(MAT_SNACK_BAR_DATA) public data: any,
