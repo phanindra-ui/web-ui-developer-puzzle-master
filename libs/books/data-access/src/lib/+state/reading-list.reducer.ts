@@ -36,7 +36,8 @@ const readingListReducer = createReducer(
     };
   }),
   on(ReadingListActions.loadReadingListSuccess, (state, action) => {
-    return readingListAdapter.setAll(action.list, {
+    // Getting invalid object from ReadingList API. So added the below filter for the app to work properly 
+    return readingListAdapter.setAll(action.list.filter((data)=>!!data.bookId), {
       ...state,
       loaded: true
     });
