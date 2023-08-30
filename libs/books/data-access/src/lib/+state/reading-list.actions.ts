@@ -26,6 +26,20 @@ export const confirmedAddToReadingList = createAction(
   '[Reading List API] Confirmed add to list',
   props<{ book: Book }>()
 );
+export const finishReading = createAction(
+  '[Books Search Results] Finish reading book',
+  props<{ item: ReadingListItem }>()
+);
+
+export const failedFinishReading = createAction(
+  '[Reading List API] Failed finish reading book',
+  props<{ item: ReadingListItem }>()
+);
+
+export const confirmedFinishReading = createAction(
+  '[Reading List API] Confirmed finish reading book',
+  props<{ item: ReadingListItem }>()
+);
 
 export const removeFromReadingList = createAction(
   '[Books Search Results] Remove from list',

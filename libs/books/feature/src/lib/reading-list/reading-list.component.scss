@@ -21,6 +21,14 @@
   }
 }
 
+.finished {
+  color: green;
+}
+
+.finished-reading {
+  text-decoration: line-through;
+}
+
 .reading-list-item--cover {
   max-width: 36px;
   max-height: 36px;
@@ -31,6 +39,10 @@
   flex: 1;
   min-width: 0;
   margin-right: $spacing-xxs;
+}
+
+.reading-list-item .reading-list-item--button-container{
+  flex-direction: row;
 }
 
 .reading-list-item--details--title,
